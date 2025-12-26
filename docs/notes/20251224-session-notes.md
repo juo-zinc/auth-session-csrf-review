@@ -12,6 +12,7 @@
 - Endpoint: `POST /rest/user/login`
 - Observation: response body includes `authentication.token` (JWT-like)
 - No `Set-Cookie` observed on the login API response (in this flow)
+- Scope: applies to the POST /rest/user/login response in this captured flow only
 
 Evidence
 - Raw HTTP: `docs/evidence/http/20251224-01-login-api-response.txt` (token redacted)
