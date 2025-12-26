@@ -1,4 +1,4 @@
-# F-02: `token` cookie lacks defensive attributes (HttpOnly / Secure / SameSite not explicitly set in this session)
+# F-02: token cookie hardening not observed (HttpOnly/Secure/SameSite)
 
 ## Summary
 After login, a cookie named `token` is present. In Chrome DevTools (Application → Cookies), the cookie appears to be JavaScript-accessible (i.e., not HttpOnly) and does not indicate `Secure`. `SameSite` is not explicitly shown/set in this session.
@@ -43,3 +43,4 @@ Secondary driver: whether cookie-based authentication is accepted by any endpoin
   - Set `HttpOnly; Secure; SameSite=Lax` (or `Strict` where feasible)
   - Keep tokens short-lived and rotate/expire aggressively
   - Ensure unsafe methods have explicit CSRF protections if cookies are used for authentication
+- If the app uses Bearer tokens via `Authorization` already, remove duplicate `token` cookies to avoid accidental future reliance and reduce client-side exposure.
