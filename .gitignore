@@ -1,0 +1,12 @@
+﻿# Avoid accidentally committing huge captures
+*.pcap
+*.pcapng
+*.zip
+
+# Burp project temp / cache (if any)
+*.tmp
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
