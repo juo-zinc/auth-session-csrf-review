@@ -10,14 +10,14 @@
 
 ## 1. Executive summary
 
-A short, evidence-driven review was performed focusing on authentication token handling, cookie attributes, and CSRF-related controls for a representative state-changing endpoint.
+A short, evidence-driven review was performed focusing on authentication token handling, cookie attributes, and CSRF-related controls for a representative state-changing endpoint `POST /api/BasketItems`.
 
 Key observations:
 - The application returns a JWT in the login response body and subsequent API calls use `Authorization: Bearer <token>`.
 - After login, a `token` cookie is visible in the browser. The login response does not set cookies via `Set-Cookie`, suggesting client-side persistence of the token (e.g., JavaScript writing the token into a cookie).
 - For `/api/BasketItems`, requests succeed even when `X-XSRF-TOKEN` is modified or omitted. In the observed flow, the endpoint still requires a valid `Authorization` header, which reduces the likelihood of classical browser-based CSRF for this endpoint under the tested conditions.
 
-Overall risk posture (in this observed flow):
+Summary (in this observed flow):
 - Primary risk concentrates on token exposure and client-side token storage.
 - XSRF enforcement appears ineffective for the tested endpoint, but exploitability is constrained by the requirement for an explicit bearer token.
 
@@ -92,7 +92,7 @@ In Chrome DevTools, the `token` cookie appears JavaScript-accessible (i.e., not 
 
 ---
 
-### F-03 — `/api/BasketItems` accepts state-changing requests without effective XSRF enforcement (Low)
+### F-03 — `/api/BasketItems` XSRF token not validated on `POST /api/BasketItems` (Bearer auth observed) 
 
 **Description**  
 Request variants were sent to `/api/BasketItems` to evaluate CSRF/XSRF control behavior. The endpoint accepts requests even when the `X-XSRF-TOKEN` header value is altered or omitted.
