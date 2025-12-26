@@ -39,8 +39,6 @@ Secondary driver: whether cookie-based authentication is accepted by any endpoin
 - Prefer keeping bearer tokens out of client-readable cookies:
   - If the cookie is not required, remove it to avoid accidental reliance.
   - If a cookie must be used for auth, strongly consider a server-issued session cookie rather than a client-readable token.
-- If the `token` cookie is required:
-  - Set `HttpOnly; Secure; SameSite=Lax` (or `Strict` where feasible)
-  - Keep tokens short-lived and rotate/expire aggressively
-  - Ensure unsafe methods have explicit CSRF protections if cookies are used for authentication
+- If a cookie must be used for auth, prefer a server-issued session cookie (so `HttpOnly` is possible) rather than persisting bearer tokens in a client-readable cookie.
+- If a client-side cookie is kept for any reason, treat it as JavaScript-readable by design; focus on eliminating XSS, reducing token lifetime, and avoiding any cookie-authenticated unsafe endpoints.
 - If the app uses Bearer tokens via `Authorization` already, remove duplicate `token` cookies to avoid accidental future reliance and reduce client-side exposure.
