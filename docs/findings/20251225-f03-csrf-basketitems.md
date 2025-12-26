@@ -1,7 +1,7 @@
-# F-03: No XSRF enforcement observed for `POST /api/BasketItems/` (CSRF not practical under Bearer-token auth in this flow)
+# F-03: Bearer token is the gating control for `POST /api/BasketItems/`; XSRF header appears unused in this flow
 
 ## Summary
-For `POST /api/BasketItems/`, request acceptance does not change when `X-XSRF-TOKEN` is set to arbitrary values or omitted. In replay tests, removing or spoofing the `Origin` header also does not change acceptance. Removing `Authorization: Bearer <token>` consistently returns `401 Unauthorized`.
+For `POST /api/BasketItems/`, request acceptance does not change when `X-XSRF-TOKEN` is set to arbitrary values or omitted. In replay (non-browser) tests, the server response remained `200 OK` when `Origin` was omitted or set to an arbitrary value, suggesting no observable server-side Origin gating for this endpoint in the tested flow.
 
 Based on the observed behavior, this workflow is protected primarily by Bearer-token authentication. Under a classic browser CSRF threat model, cross-site requests do not automatically include custom `Authorization` headers, so CSRF is not practical for this endpoint in the tested flow.
 
@@ -64,6 +64,8 @@ Evidence
 - `docs/evidence/screenshots/20251225-s17-basketitems-csrf-xsrf-bbb-response.png`
 - `docs/evidence/screenshots/20251225-s18-basketitems-csrf-xsrf-missing-request.png`
 - `docs/evidence/screenshots/20251225-s19-basketitems-csrf-xsrf-missing-response.png`
+
+Interpretation: In the tested Bearer-token flow, `X-XSRF-TOKEN` does not appear to be validated or required for request acceptance.
 
 ## Impact assessment
 - Practical CSRF (as-tested): unlikely for this endpoint under the observed design, because a valid `Authorization: Bearer` token is required and is not automatically attached by browsers in cross-site requests.
