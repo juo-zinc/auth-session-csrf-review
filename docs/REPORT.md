@@ -136,7 +136,7 @@ However, ineffective XSRF enforcement still represents a control gap and can bec
 ## 5. Recommendations (summary)
 
 - Avoid persisting bearer tokens in JavaScript-accessible storage (including non-HttpOnly cookies). Prefer a single, consistent authentication channel and strong token lifecycle controls (short TTL, rotation/refresh patterns).
-- If cookies are used for authentication in any flow, apply defensive attributes (`HttpOnly`, `Secure`, explicit `SameSite`) and ensure unsafe methods have CSRF protections.
+- If cookies are used for authentication in any flow, apply defensive attributes (`HttpOnly`, `Secure`, explicit `SameSite`) and ensure unsafe methods have CSRF protections. Note: if the `token` cookie is created client-side (no server `Set-Cookie`), `HttpOnly` cannot be applied; remediation requires removing the cookie or switching to a server-issued session cookie.
 - If an anti-CSRF mechanism is intended (e.g., XSRF cookie/header pattern), enforce it consistently on state-changing endpoints and reject requests when missing/incorrect.
 - Review origin-handling and CORS behavior for API endpoints to ensure it matches the intended threat model.
 
