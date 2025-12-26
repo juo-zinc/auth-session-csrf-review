@@ -24,6 +24,7 @@ Files
 
 ### 2) No server-issued session cookie observed on login response
 - Observation: login response headers do not include `Set-Cookie` for an auth/session cookie in this flow.
+- Scope: this observation applies to the `POST /rest/user/login` response only.
 
 Files
 - `docs/evidence/screenshots/20251224-s04-login-response-headers.png`
