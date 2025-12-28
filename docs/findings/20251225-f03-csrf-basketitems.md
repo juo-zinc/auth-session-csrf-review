@@ -67,6 +67,11 @@ Evidence
 
 Interpretation: In the tested Bearer-token flow, `X-XSRF-TOKEN` does not appear to be validated or required for request acceptance.
 
+## Evidence boundary / test hygiene
+
+- Note: Because POST /api/BasketItems/ is state-changing, repeating the exact same captured request can trigger application/data-layer errors (e.g., duplicate/unique-constraint violations) and produce HTTP 500. This behavior is treated as a replay artifact and is not interpreted as XSRF enforcement (which would typically manifest as a clean authorization/CSRF rejection such as 401/403).
+- To keep the XSRF-variant test meaningful, each variant request should be sent against a clean state (e.g., reset basket state) or use a non-duplicate payload (e.g., different ProductId) so that the result reflects request acceptance controls rather than application uniqueness rules.
+
 ## Impact assessment
 - Practical CSRF (as-tested): unlikely for this endpoint under the observed design, because a valid `Authorization: Bearer` token is required and is not automatically attached by browsers in cross-site requests.
 - Hardening / future risk:
